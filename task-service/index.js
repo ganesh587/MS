@@ -1,6 +1,7 @@
 const express = require('express');
 require('./config/database');
 const bodyParser = require('body-parser');
+const { connectRabbitMQWithRetry } = require('./config/rabbitMq');
 
 const taskRoutes = require('./routes/taskRoutes');
 
@@ -12,6 +13,7 @@ app.use('/tasks', taskRoutes);
 
 app.listen(3001, () => {
   console.log(`Server is running on http://localhost:3001`);
+  connectRabbitMQWithRetry();
 });
 app.get('/', (req, res) => {
   res.send('Hello World!');
